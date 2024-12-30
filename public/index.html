@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VerificationTool</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+    function handleGoogleSignIn(response) {
+      fetch('/verify/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: response.credential })
+      }).then(res => res.json()).then(data => {
+        if (data.valid) {
+          window.location.href = `https://discord.com/api/oauth2/authorize?client_id=1323284636507312222&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fdiscord%2Fcallback&response_type=code&scope=identify%20guilds.join`;
+        } else {
+          alert('Invalid email domain');
+        }
+      }).catch(err => alert('Google verification failed'));
+    }
+  </script>
+</head>
+<body>
+  <h1>Are an NSNN Student ?</h1>
+  <div id="g_id_onload" data-client_id="599175576909-0f1gr7oqtddlvv8dhf54ov7dimqogppp.apps.googleusercontent.com" data-callback="handleGoogleSignIn"></div>
+  <div class="g_id_signin" data-type="standard"></div>
+</body>
+</html>
